@@ -16,7 +16,7 @@ appWebview.setIgnoreCursorEvents(false);
 
 let isIgnored: boolean | null = null;
 let isDragging: boolean = false;
-// rust backend emit mouse position using udev crate
+// rust backend emits mouse position in "device-mouse-move" event with udev
 // frontend can use this as an alternative to the "mousemove" event
 appWebview.listen<{ x: number; y: number }>('device-mouse-move', async ({ payload }) => {
   // Note that CSS pixel is different from device pixel.
@@ -72,6 +72,7 @@ function App() {
         onStop={() => {
           onStop(nodeRef)
         }}
+        handle='.drag-handle'
       >
         <div 
           ref={nodeRef}
@@ -83,7 +84,20 @@ function App() {
             height: boxPos.height
           }}
         >
-          This is draggable!
+          <div
+            className='drag-handle'
+            style={{
+              position: "relative",
+              top: 0,
+              left: 0,
+              width: "50px",
+              height: "50px",
+              backgroundColor: "red"
+            }}
+          ></div>
+            <button>
+              This is draggable!
+            </button>
         </div>
       </Draggable>
   );
